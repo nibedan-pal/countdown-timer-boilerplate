@@ -1,23 +1,39 @@
-import React from 'react';
-
+import React from "react";
+import "./FormStyling.css";
 class CountdownForm extends React.Component {
-     onSubmit(e) {
-       //This will give you string for seconds. Do not remove refs
-        var secondsStr = this.refs.seconds.value;
+	onSubmit = (e, timeAdded) => {
+		//This will give you string for seconds. Do not remove refs
+		e.preventDefault();
+		this.props.onSetCountdownTime(timeAdded);
+	};
 
-       
-    }
-
-    render() {
-        return (
-            <div>
-                <form ref="form" onSubmit={this.onSubmit.bind(this)} className="countdown-form">
-                    <input type="text" ref="seconds" placeholder="Enter time in seconds"/>
-                    <input type="submit" className="button success expanded" value="Start Countdown"/>
-                </form>
-            </div>
-        );
-    }
+	render() {
+		return (
+			<div>
+				<form
+					ref="form"
+					onSubmit={e => {
+						var secondsStr = this.refs.seconds.value.trim();
+						const timeAdded = parseInt(secondsStr);
+						if (timeAdded >= 0) this.onSubmit(e, timeAdded);
+						else e.preventDefault();
+					}}
+					className="countdown-form form-body">
+					<input
+						type="text"
+						ref="seconds"
+						className="enter-text"
+						placeholder="Enter time in seconds"
+					/>
+					<input
+						type="submit"
+						className="button success expanded timer-button"
+						value="Start Countdown"
+					/>
+				</form>
+			</div>
+		);
+	}
 }
 
 export default CountdownForm;
